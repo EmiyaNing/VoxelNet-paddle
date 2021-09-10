@@ -98,8 +98,8 @@ class MiddleAndRPN(nn.Layer):
         self.block2 = RPNBlock(RPN_layer_num[1], RPN_hiddendim[1], RPN_outputdim[1], 2, 2, 0)
         self.block3 = RPNBlock(RPN_layer_num[2], RPN_hiddendim[2], RPN_outputdim[2], 4, 4, 0)
 
-        self.pconv  = BNConv2D(768, 2, 1, 1, 0)
-        self.rconv  = BNConv2D(768, 14, 1, 1, 0)
+        self.pconv  = nn.Conv2D(768, 2, 1, 1, 0)
+        self.rconv  = nn.Conv2D(768, 14, 1, 1, 0)
 
     def forward(self,inputs):
         middle = self.Mconv1(inputs)
