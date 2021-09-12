@@ -47,7 +47,7 @@ _C.MODEL.RPN_HIDDEN_DIM= [128, 128, 256]
 _C.MODEL.RPN_OUTPUT_DIM= [256, 256, 256]
 if _C.MODEL.DETECT_OBJ == 'Car':
     _C.Y_MIN = -40
-    _C.Y_MAX = 0
+    _C.Y_MAX = 40
     _C.X_MIN = 0
     _C.X_MAX = 70.4
     _C.VOXEL_X_SIZE = 0.2

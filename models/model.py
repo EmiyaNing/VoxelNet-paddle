@@ -23,6 +23,5 @@ class VoxelNet(nn.Layer):
 
     def forward(self, inputs, num_voxel, coor):
         vfe_feature = self.vfe_layer(inputs, num_voxel, coor)
-        print(vfe_feature.shape)
         p_map,r_map = self.middle_rpn(vfe_feature)
         return p_map, r_map

@@ -129,7 +129,7 @@ class VoxelFeatureExtractor(nn.Layer):
         #x = self.linear(features)
         #x = paddle.transpose(self.norm(paddle.transpose(x, perm=[0, 2, 1])), perm=[0, 2, 1])
         #x = self.relu(x)
-        x = x * mask
+        x = features * mask
         voxelwise = paddle.max(x, axis=1)
         voxelwise = self.voxel_index(voxelwise, coor)
         return voxelwise

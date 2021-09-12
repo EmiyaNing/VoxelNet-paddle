@@ -33,5 +33,5 @@ def show_model():
     print_model_named_params(model)
 
 if __name__ == '__main__':
-    #test_model()
-    show_model()
+    test_model()
+    #show_model()
