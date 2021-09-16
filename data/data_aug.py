@@ -7,7 +7,7 @@ import glob
 sys.path.append('..')
 
 from utils.utils import *
-from preprocess import *
+from data.preprocess import *
 
 object_dir = './data/object'
 

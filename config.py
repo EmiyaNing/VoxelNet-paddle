@@ -29,10 +29,11 @@ _C.BASE = ['']
 _C.DATA = CN()
 _C.DATA.BATCH_SIZE = 4      #1024 batch_size for single GPU
 _C.DATA.BATCH_SIZE_EVAL = 8 #1024 batch_size for single GPU
-_C.DATA.DATA_PATH = '/dataset/imagenet/' # path to dataset
+_C.DATA.DATA_PATH = '/home/aistudio/DATA/testing/' # path to dataset
 _C.DATA.DATASET = 'kitti' # dataset name
 
-_C.DATA.NUM_WORKERS = 2 # number of data loading threads
+
+_C.DATA.NUM_WORKERS = 0 # number of data loading threads
 
 # model settings
 _C.MODEL = CN()
@@ -45,6 +46,9 @@ _C.MODEL.VFE_FILTER_NUM= [32, 128]
 _C.MODEL.RPN_LAYER_NUM = [4, 6, 6]
 _C.MODEL.RPN_HIDDEN_DIM= [128, 128, 256]
 _C.MODEL.RPN_OUTPUT_DIM= [256, 256, 256]
+_C.MODEL.RPN_NMS_POST_TOPK = 20
+_C.MODEL.RPN_NMS_THRESH = 0.1
+_C.MODEL.RPN_SCORE_THRESH = 0.96
 if _C.MODEL.DETECT_OBJ == 'Car':
     _C.Y_MIN = -40
     _C.Y_MAX = 40
@@ -71,6 +75,33 @@ else:
     _C.FEATURE_RATIO = 2
     _C.FEATURE_WIDTH = int(_C.INPUT_WIDTH / _C.FEATURE_RATIO)
     _C.FEATURE_HIGHT = int(_C.INPUT_HIGHT / _C.FEATURE_RATIO)
+
+if _C.MODEL.DETECT_OBJ == 'Car':
+    # car anchor
+    _C.ANCHOR_L = 3.9
+    _C.ANCHOR_W = 1.6
+    _C.ANCHOR_H = 1.56
+    _C.ANCHOR_Z = -1.0 - _C.ANCHOR_H/2
+    _C.RPN_POS_IOU = 0.6
+    _C.RPN_NEG_IOU = 0.45
+
+elif _C.MODEL.DETECT_OBJ == 'Pedestrian':
+    # pedestrian anchor
+    _C.ANCHOR_L = 0.8
+    _C.ANCHOR_W = 0.6
+    _C.ANCHOR_H = 1.73
+    _C.ANCHOR_Z = -0.6 - _C.ANCHOR_H/2
+    _C.RPN_POS_IOU = 0.5
+    _C.RPN_NEG_IOU = 0.35
+
+if _C.MODEL.DETECT_OBJ == 'Cyclist':
+    # cyclist anchor
+    _C.ANCHOR_L = 1.76
+    _C.ANCHOR_W = 0.6
+    _C.ANCHOR_H = 1.73
+    _C.ANCHOR_Z = -0.6 - _C.ANCHOR_H/2
+    _C.RPN_POS_IOU = 0.5
+    _C.RPN_NEG_IOU = 0.35
 
 
 

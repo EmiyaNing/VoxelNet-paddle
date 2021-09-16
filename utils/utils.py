@@ -547,7 +547,7 @@ def cal_anchors():
     # Output:
     #   anchors: (w, l, 2, 7) x y z h w l r
     x = np.linspace(cfg.X_MIN, cfg.X_MAX, cfg.FEATURE_WIDTH)
-    y = np.linspace(cfg.Y_MIN, cfg.Y_MAX, cfg.FEATURE_HEIGHT)
+    y = np.linspace(cfg.Y_MIN, cfg.Y_MAX, cfg.FEATURE_HIGHT)
     cx, cy = np.meshgrid(x, y)
     # all is (w, l, 2)
     cx = np.tile(cx[..., np.newaxis], 2)
@@ -837,6 +837,44 @@ def cal_box2d_iou(boxes2d, gt_boxes2d, T_VELO_2_CAM=None, R_RECT_0=None):
 
     return output
 
+def py_cpu_nms(boxes, scores, thresh):
+    '''
+    Args:
+        boxes:  a tensor with [boxes_number, 4]
+        scores: a tensor with [boxes_number]
+        thresh: a float number which is a threshoud of the boxes
+    Return:
+        keep:   a tensor with [filter_boxes_number]
+    '''
+ 
+    x1 = boxes[:,0]
+    y1 = boxes[:,1]
+    x2 = boxes[:,2]
+    y2 = boxes[:,3]
+    areas = (y2-y1+1) * (x2-x1+1)
+    keep = []
+    index = scores.argsort()[::-1]
+    while index.size >0:
+        i = index[0]       # every time the first is the biggst, and add it directly
+        keep.append(i)
+ 
+ 
+        x11 = np.maximum(x1[i], x1[index[1:]])    # calculate the points of overlap 
+        y11 = np.maximum(y1[i], y1[index[1:]])
+        x22 = np.minimum(x2[i], x2[index[1:]])
+        y22 = np.minimum(y2[i], y2[index[1:]])
+        
+ 
+        w = np.maximum(0, x22-x11+1)    # the weights of overlap
+        h = np.maximum(0, y22-y11+1)    # the height of overlap
+       
+        overlaps = w*h
+        ious = overlaps / (areas[i]+areas[index[1:]] - overlaps)
+ 
+        idx = np.where(ious<=thresh)[0]
+        index = index[idx+1]   # because index start from 1
+ 
+    return np.array(keep)
 
 if __name__ == '__main__':
     pass
